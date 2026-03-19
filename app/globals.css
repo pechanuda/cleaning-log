@@ -387,6 +387,7 @@ h1 {
 }
 
 .member-block {
+  position: relative;
   display: grid;
   gap: 10px;
   width: 100%;
@@ -427,6 +428,60 @@ h1 {
   color: var(--muted);
   text-transform: uppercase;
   letter-spacing: 0.08em;
+}
+
+.status-overlay {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1;
+  padding: 7px 10px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  box-shadow: 0 10px 20px rgba(18, 32, 51, 0.12);
+}
+
+.status-overlay--saving {
+  animation: status-pill-fade 1.2s ease forwards;
+}
+
+.status-overlay--saving {
+  background: rgba(47, 111, 182, 0.9);
+  color: #f8fbff;
+}
+
+.status-overlay--saved {
+  background: rgba(64, 160, 101, 0.92);
+  color: #f8fff9;
+  animation: status-pill-fade 1s ease forwards;
+}
+
+.status-overlay--error {
+  background: rgba(198, 87, 87, 0.94);
+  color: #fff8f8;
+  animation: status-pill-fade 2s ease forwards;
+}
+
+@keyframes status-pill-fade {
+  0% {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.96);
+  }
+  12% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  78% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+  }
 }
 
 .member-block__mobile-day {

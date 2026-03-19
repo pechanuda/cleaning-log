@@ -80,7 +80,6 @@ export function MonthBoard({ data, selectedMemberId }: MonthBoardProps) {
   async function saveDay(date: string, task1Id: string | null, task2Id: string | null) {
     const saveKey = `${date}:${selectedMemberId ?? "missing"}`;
     setSavingKey(saveKey);
-    setError(null);
 
     try {
       const response = await fetch("/api/day-entry", {
@@ -96,9 +95,11 @@ export function MonthBoard({ data, selectedMemberId }: MonthBoardProps) {
         throw new Error(payload?.error ?? "Unable to save the day entry.");
       }
 
+      setError(null);
       router.refresh();
     } catch (submissionError) {
       setError(submissionError instanceof Error ? submissionError.message : "Unable to save the day entry.");
+      throw submissionError;
     } finally {
       setSavingKey(null);
     }
@@ -284,6 +285,8 @@ type MemberTaskBlockProps = {
   onSave: (date: string, task1Id: string | null, task2Id: string | null) => Promise<void>;
 };
 
+type SaveStatus = "idle" | "saving" | "saved" | "error";
+
 function MemberTaskBlock({
   date,
   dayOfMonth,
@@ -297,21 +300,94 @@ function MemberTaskBlock({
 }: MemberTaskBlockProps) {
   const [task1Id, setTask1Id] = useState(entry.task1Id ?? "");
   const [task2Id, setTask2Id] = useState(entry.task2Id ?? "");
+  const [saveStatus, setSaveStatus] = useState<SaveStatus>("idle");
+  const hydratedRef = useRef(false);
+  const syncedRef = useRef({ task1Id: entry.task1Id ?? "", task2Id: entry.task2Id ?? "" });
+  const statusTimeoutRef = useRef<number | null>(null);
+  const onSaveRef = useRef(onSave);
   const disabled = !isActive || isSaving;
+
+  useEffect(() => {
+    onSaveRef.current = onSave;
+  }, [onSave]);
 
   useEffect(() => {
     setTask1Id(entry.task1Id ?? "");
     setTask2Id(entry.task2Id ?? "");
+    syncedRef.current = {
+      task1Id: entry.task1Id ?? "",
+      task2Id: entry.task2Id ?? ""
+    };
   }, [entry.task1Id, entry.task2Id]);
 
+  useEffect(() => {
+    hydratedRef.current = true;
+  }, []);
+
+  useEffect(() => {
+    if (!hydratedRef.current || !isActive) {
+      return;
+    }
+
+    const matchesSyncedState =
+      task1Id === syncedRef.current.task1Id && task2Id === syncedRef.current.task2Id;
+
+    if (matchesSyncedState) {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(async () => {
+      try {
+        setSaveStatus("saving");
+        await onSaveRef.current(date, task1Id || null, task2Id || null);
+        syncedRef.current = { task1Id, task2Id };
+        setSaveStatus("saved");
+        if (statusTimeoutRef.current) {
+          window.clearTimeout(statusTimeoutRef.current);
+        }
+        statusTimeoutRef.current = window.setTimeout(() => {
+          setSaveStatus((current) => (current === "saved" ? "idle" : current));
+          statusTimeoutRef.current = null;
+        }, 1500);
+      } catch {
+        setSaveStatus("error");
+        if (statusTimeoutRef.current) {
+          window.clearTimeout(statusTimeoutRef.current);
+        }
+        statusTimeoutRef.current = window.setTimeout(() => {
+          setSaveStatus((current) => (current === "error" ? "idle" : current));
+          statusTimeoutRef.current = null;
+        }, 2000);
+      }
+    }, 350);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [date, isActive, task1Id, task2Id]);
+
+  useEffect(() => {
+    return () => {
+      if (statusTimeoutRef.current) {
+        window.clearTimeout(statusTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  function getStatusLabel() {
+    if (saveStatus === "saving") return "Saving...";
+    if (saveStatus === "saved") return "Saved";
+    if (saveStatus === "error") return "Failed";
+    return null;
+  }
+
   return (
-    <form
+    <div
       className={`member-block ${isActive ? "member-block--active" : "member-block--inactive"} ${isMobileVisible ? "" : "member-block--mobile-hidden"}`}
-      onSubmit={(event) => {
-        event.preventDefault();
-        void onSave(date, task1Id || null, task2Id || null);
-      }}
     >
+      {isActive && getStatusLabel() ? (
+        <div className={`status-overlay status-overlay--${saveStatus}`}>{getStatusLabel()}</div>
+      ) : null}
       <div className="member-block__header">
         <div className="member-block__title">
           <div className="member-block__mobile-day" aria-hidden="true">
@@ -348,9 +424,6 @@ function MemberTaskBlock({
           ))}
         </select>
       </label>
-      <button type="submit" className="secondary-button" disabled={disabled}>
-        {isSaving ? "Saving..." : "Save"}
-      </button>
-    </form>
+    </div>
   );
 }
