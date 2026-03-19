@@ -4,6 +4,6 @@ node_modules
 .env.local
 dist
 coverage
-*.log
+*.logs
 tsconfig.tsbuildinfo
 .idea/
