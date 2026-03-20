@@ -1,0 +1,21 @@
+{
+  "householdName": "Guma byt",
+  "members": ["Hypochondr", "Plisnaky", "Bazilisek"],
+  "tasks": [
+    { "name": "Úklid kuchyně", "size": "L" },
+    { "name": "Úklid koupelny", "size": "L" },
+    { "name": "Vyluxování", "size": "M" },
+    { "name": "Vytření", "size": "M" },
+    { "name": "Umytí trouby", "size": "M" },
+    { "name": "Vyndání odpadků", "size": "XS" },
+    { "name": "Vyndání myčky", "size": "XS" },
+    { "name": "Vyprání koberců a utěrek", "size": "XS" },
+    { "name": "Vynesení odpadků", "size": "S" },
+    { "name": "Umytí dřezu", "size": "S" },
+    { "name": "Umytí vany", "size": "S" },
+    { "name": "Umytí odkapávače", "size": "S" },
+    { "name": "Umytí umyvadla", "size": "S" },
+    { "name": "Umytí záchoda", "size": "S" },
+    { "name": "Umytí sporáku", "size": "S" }
+  ]
+}
