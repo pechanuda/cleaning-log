@@ -445,7 +445,7 @@ h1 {
 }
 
 .status-overlay--saving {
-  animation: status-pill-fade 1.2s ease forwards;
+  animation: status-pill-fade 3s ease forwards;
 }
 
 .status-overlay--saving {
@@ -456,7 +456,7 @@ h1 {
 .status-overlay--saved {
   background: rgba(64, 160, 101, 0.92);
   color: #f8fff9;
-  animation: status-pill-fade 1s ease forwards;
+  animation: status-pill-fade 1.5s ease forwards;
 }
 
 .status-overlay--error {
