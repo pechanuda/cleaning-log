@@ -88,6 +88,8 @@ function getTaskPriorities(rows: TaskCompletionRecord[], todayIso: string): Task
     const dueDate = addDays(task.last_completed_date, task.frequencyDays);
     const daysUntilDue = daysBetween(todayIso, dueDate);
     const dueSoonWindow = Math.max(1, Math.ceil(task.frequencyDays * 0.2));
+    const status: TaskPriority["status"] =
+      daysUntilDue < 0 ? "overdue" : daysUntilDue <= dueSoonWindow ? "due-soon" : "on-track";
 
     return {
       taskId: task.id,
@@ -96,8 +98,7 @@ function getTaskPriorities(rows: TaskCompletionRecord[], todayIso: string): Task
       lastCompletedDate: task.last_completed_date,
       dueDate,
       daysUntilDue,
-      status:
-        daysUntilDue < 0 ? "overdue" : daysUntilDue <= dueSoonWindow ? "due-soon" : "on-track"
+      status
     };
   });
 

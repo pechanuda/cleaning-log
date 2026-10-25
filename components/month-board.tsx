@@ -43,6 +43,10 @@ function getPriorityCopy(priority: TaskPriority) {
     return `${days} ${formatDays(days)} po termínu`;
   }
   if (priority.status === "due-soon") {
+    if (priority.daysUntilDue === null) {
+      return "Termín se blíží";
+    }
+
     return priority.daysUntilDue === 0
       ? "Termín dnes"
       : `Termín za ${priority.daysUntilDue} ${formatDays(priority.daysUntilDue)}`;
@@ -79,8 +83,6 @@ export function MonthBoard({ data, selectedMemberId }: MonthBoardProps) {
   );
 
   const selectedMember = data.members.find((member) => member.id === selectedMemberId) ?? null;
-  const mobileVisibleMember =
-    data.members.find((member) => member.id === mobileVisibleMemberId) ?? selectedMember ?? data.members[0] ?? null;
   const winner = data.scoreboard[0];
   const loser = [...data.scoreboard].sort((left, right) => left.points - right.points || left.memberName.localeCompare(right.memberName))[0];
 
