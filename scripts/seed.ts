@@ -47,13 +47,14 @@ async function main() {
     for (const task of config.tasks) {
       await client.query(
         `
-          INSERT INTO tasks (name, size, points)
-          VALUES ($1, $2, $3)
+          INSERT INTO tasks (name, size, points, frequency_days)
+          VALUES ($1, $2, $3, $4)
           ON CONFLICT (name) DO UPDATE
             SET size = EXCLUDED.size,
-                points = EXCLUDED.points
+                points = EXCLUDED.points,
+                frequency_days = EXCLUDED.frequency_days
         `,
-        [task.name, task.size, pointsBySize[task.size]]
+        [task.name, task.size, pointsBySize[task.size], task.frequencyDays]
       );
     }
 

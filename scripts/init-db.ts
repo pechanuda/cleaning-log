@@ -76,6 +76,17 @@ async function ensureCompositeDayEntries() {
   await pool.query("ALTER TABLE day_entries_v2 RENAME TO day_entries");
 }
 
+async function ensureTaskFrequencyDays() {
+  const pool = getPool();
+  await pool.query(
+    "ALTER TABLE tasks ADD COLUMN IF NOT EXISTS frequency_days SMALLINT NOT NULL DEFAULT 0"
+  );
+  await pool.query("ALTER TABLE tasks DROP CONSTRAINT IF EXISTS tasks_frequency_days_check");
+  await pool.query(
+    "ALTER TABLE tasks ADD CONSTRAINT tasks_frequency_days_check CHECK (frequency_days BETWEEN 0 AND 365)"
+  );
+}
+
 async function main() {
   const pool = getPool();
   await waitForDatabase();
@@ -85,6 +96,7 @@ async function main() {
   }
 
   await pool.query(schemaSql);
+  await ensureTaskFrequencyDays();
   await ensureCompositeDayEntries();
   console.log("Database schema is ready.");
   await pool.end();

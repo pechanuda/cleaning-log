@@ -1,0 +1,25 @@
+{
+  "householdName": "Dvorecká 41",
+  "members": ["Kolibřík", "Koblížek"],
+  "tasks": [
+    { "name": "Vyluxování", "size": "M", "frequencyDays": 7 },
+    { "name": "Vytření", "size": "M", "frequencyDays": 7 },
+    { "name": "Umytí trouby", "size": "M", "frequencyDays": 90 },
+    { "name": "Vynesení odpadků - tříděný", "size": "S", "frequencyDays": 0 },
+    { "name": "Vyndání odpadků - směs", "size": "XS", "frequencyDays": 0 },
+    { "name": "Vyprání povlečení a ručníků]", "size": "XS", "frequencyDays": 14 },
+    { "name": "Pověšení prádla]", "size": "S", "frequencyDays": 0 },
+    { "name": "Umytí dřezu", "size": "S", "frequencyDays": 7 },
+    { "name": "Umytí sprcháče", "size": "S", "frequencyDays": 7 },
+    { "name": "Umytí odkapávače", "size": "S", "frequencyDays": 14 },
+    { "name": "Umytí umyvadla", "size": "S", "frequencyDays": 7 },
+    { "name": "Umytí záchodu", "size": "S", "frequencyDays": 14 },
+    { "name": "Umytí povrchů koupelna", "size": "S", "frequencyDays": 7 },
+    { "name": "Utření prachu", "size": "M", "frequencyDays": 14 },
+    { "name": "Utření zrcadel", "size": "S", "frequencyDays": 14 },
+    { "name": "Umytí lednice", "size": "L", "frequencyDays": 90 },
+    { "name": "Adhoc úklid S", "size": "S", "frequencyDays": 0 },
+    { "name": "Adhoc úklid M", "size": "M", "frequencyDays": 0 },
+    { "name": "Adhoc úklid L", "size": "L", "frequencyDays": 0 }
+  ]
+}

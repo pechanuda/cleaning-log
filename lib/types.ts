@@ -12,6 +12,19 @@ export type Task = {
   name: string;
   size: TaskSize;
   points: number;
+  frequencyDays: number;
+};
+
+export type TaskPriorityStatus = "overdue" | "due-soon" | "on-track" | "not-yet-completed" | "no-frequency";
+
+export type TaskPriority = {
+  taskId: string;
+  taskName: string;
+  frequencyDays: number;
+  lastCompletedDate: string | null;
+  dueDate: string | null;
+  daysUntilDue: number | null;
+  status: TaskPriorityStatus;
 };
 
 export type DayEntry = {
@@ -25,6 +38,14 @@ export type DayEntry = {
 export type ScoreboardRow = {
   memberId: string;
   memberName: string;
+  points: number;
+};
+
+export type MemberTaskStat = {
+  memberId: string;
+  memberName: string;
+  taskName: string;
+  completions: number;
   points: number;
 };
 
@@ -42,4 +63,6 @@ export type MonthViewResponse = {
   tasks: Task[];
   days: MonthDay[];
   scoreboard: ScoreboardRow[];
+  memberTaskStats: MemberTaskStat[];
+  taskPriorities: TaskPriority[];
 };

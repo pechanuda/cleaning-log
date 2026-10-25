@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS tasks (
   name TEXT NOT NULL UNIQUE,
   size TEXT NOT NULL CHECK (size IN ('XS', 'S', 'M', 'L')),
   points SMALLINT NOT NULL CHECK (points BETWEEN 1 AND 4),
+  frequency_days SMALLINT NOT NULL DEFAULT 0 CONSTRAINT tasks_frequency_days_check CHECK (frequency_days BETWEEN 0 AND 365),
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 

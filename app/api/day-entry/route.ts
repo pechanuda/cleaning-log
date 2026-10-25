@@ -10,7 +10,7 @@ export async function POST(request: Request) {
   const selectedMemberId = cookieStore.get(MEMBER_COOKIE)?.value;
 
   if (!selectedMemberId) {
-    return NextResponse.json({ error: "Select a member first" }, { status: 400 });
+    return NextResponse.json({ error: "Nejprve vyberte člena." }, { status: 400 });
   }
 
   const json = await request.json();
@@ -19,7 +19,7 @@ export async function POST(request: Request) {
 
   const memberResult = await pool.query("SELECT id FROM members WHERE id = $1 LIMIT 1", [selectedMemberId]);
   if (memberResult.rowCount === 0) {
-    const response = NextResponse.json({ error: "Stored member does not exist" }, { status: 400 });
+    const response = NextResponse.json({ error: "Uložený člen neexistuje." }, { status: 400 });
     response.cookies.set(MEMBER_COOKIE, "", { ...cookieOptions, maxAge: 0 });
     return response;
   }
@@ -32,7 +32,7 @@ export async function POST(request: Request) {
     );
 
     if (taskResult.rowCount !== taskIds.length) {
-      return NextResponse.json({ error: "One or more tasks do not exist" }, { status: 400 });
+      return NextResponse.json({ error: "Jeden nebo více úkolů neexistuje." }, { status: 400 });
     }
   }
 

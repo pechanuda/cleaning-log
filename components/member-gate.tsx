@@ -32,7 +32,7 @@ export function MemberGate({ members, selectedMemberId }: MemberGateProps) {
     });
 
     if (!response.ok) {
-      throw new Error("Unable to store selected member.");
+      throw new Error("Vybraného člena se nepodařilo uložit.");
     }
 
     window.location.reload();
@@ -45,7 +45,7 @@ export function MemberGate({ members, selectedMemberId }: MemberGateProps) {
         await saveMember(selectedId);
       } catch (submissionError) {
         setError(
-          submissionError instanceof Error ? submissionError.message : "Unable to store selected member."
+          submissionError instanceof Error ? submissionError.message : "Vybraného člena se nepodařilo uložit."
         );
       }
     });
@@ -58,9 +58,9 @@ export function MemberGate({ members, selectedMemberId }: MemberGateProps) {
   return (
     <div className="modal-shell" role="presentation">
       <div className="modal-card" role="dialog" aria-modal="true" aria-labelledby="member-gate-title">
-        <p className="eyebrow">Cleaning Log</p>
-        <h2 id="member-gate-title">Who are you?</h2>
-        <p className="modal-copy">This device stores one household member in a browser cookie.</p>
+        <p className="eyebrow">Úklidový deník</p>
+        <h2 id="member-gate-title">Kdo jste?</h2>
+        <p className="modal-copy">Toto zařízení si uloží vybraného člena domácnosti do cookie prohlížeče.</p>
         <div className="member-list">
           {members.map((member) => (
             <label
@@ -80,7 +80,7 @@ export function MemberGate({ members, selectedMemberId }: MemberGateProps) {
         </div>
         {error ? <p className="form-error">{error}</p> : null}
         <button type="button" className="primary-button" disabled={isPending || !selectedId} onClick={onSubmit}>
-          {isPending ? "Saving..." : "Začít čistit..."}
+          {isPending ? "Ukládám..." : "Začít uklízet..."}
         </button>
       </div>
     </div>

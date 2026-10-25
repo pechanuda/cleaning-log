@@ -57,11 +57,11 @@ Example:
   "householdName": "Home Base",
   "members": ["Alice", "Bob", "Charlie"],
   "tasks": [
-    { "name": "Kitchen wipe", "size": "XS" },
-    { "name": "Laundry", "size": "M" },
-    { "name": "Bathroom deep clean", "size": "L" }
+    { "name": "Kitchen wipe", "size": "XS", "frequencyDays": 3 },
+    { "name": "Laundry", "size": "M", "frequencyDays": 7 },
+    { "name": "Bathroom deep clean", "size": "L", "frequencyDays": 14 }
   ]
 }
 ```
 
-Seed JSON is bootstrap-only. After seeding, the database is the runtime source of truth.
+`frequencyDays` is the number of days between completions. Set it to `0` for an on-demand chore with no frequency; it will be shown neutrally in the frequency overview. Seed JSON is bootstrap-only. After seeding, the database is the runtime source of truth.

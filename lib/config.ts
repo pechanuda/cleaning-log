@@ -6,7 +6,8 @@ import { TASK_SIZES, type TaskSize } from "@/lib/types";
 
 const taskSchema = z.object({
   name: z.string().trim().min(1),
-  size: z.enum(TASK_SIZES)
+  size: z.enum(TASK_SIZES),
+  frequencyDays: z.number().int().min(0).max(365).default(0)
 });
 
 const householdConfigSchema = z.object({
@@ -18,7 +19,7 @@ const householdConfigSchema = z.object({
 export type HouseholdConfig = {
   householdName: string;
   members: string[];
-  tasks: { name: string; size: TaskSize }[];
+  tasks: { name: string; size: TaskSize; frequencyDays: number }[];
 };
 
 function uniqueOrThrow(values: string[], label: string) {

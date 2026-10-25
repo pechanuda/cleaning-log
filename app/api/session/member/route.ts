@@ -10,7 +10,7 @@ export async function POST(request: Request) {
   const memberResult = await getPool().query("SELECT id FROM members WHERE id = $1 LIMIT 1", [payload.memberId]);
 
   if (memberResult.rowCount === 0) {
-    return NextResponse.json({ error: "Member not found" }, { status: 404 });
+    return NextResponse.json({ error: "Člen nebyl nalezen." }, { status: 404 });
   }
 
   const response = NextResponse.json({ ok: true });
